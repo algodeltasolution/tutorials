@@ -1,0 +1,29 @@
+// This Pine Script® code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
+// © algodeltatv
+
+//@version=6
+indicator("Ema indicator", overlay = true)
+
+// EMA Section
+// EMA1 settings
+ema1Length = input.int(defval = 4, title = "EMA1 Length", inline = "EMA1 Inline", group = "EMA1 Settings")
+ema1Source = input.source(defval = close, title = "EMA1 Source", inline = "EMA1 Inline", group = "EMA1 Settings")
+ema1Color = input.color(defval = color.green, title = "EMA1 Color", inline = "EMA1 Inline", group = "EMA1 Settings")
+ema1 = ta.ema(ema1Source, ema1Length)
+plot(ema1, title = "EMA1", color = ema1Color, force_overlay = true)
+
+// EMA2 settings
+ema2Length = input.int(defval = 10, title = "EMA2 Length", inline = "EMA2 Inline", group = "EMA2 Settings")
+ema2Source = input.source(defval = close, title = "EMA2 Source", inline = "EMA2 Inline", group = "EMA2 Settings")
+ema2Color = input.color(defval = color.orange, title = "EMA2 Color", inline = "EMA2 Inline", group = "EMA2 Settings")
+ema2 = ta.ema(ema2Source, ema2Length)
+plot(ema2, title = "EMA2", color = ema2Color, force_overlay = true)
+
+buySignal = ta.crossover(ema1, ema2) and barstate.isconfirmed
+sellSignal = ta.crossunder(ema1, ema2) and barstate.isconfirmed
+
+plotshape(buySignal, title = "Buy Signal", style = shape.arrowup, location = location.belowbar, color = color.teal, text = "Buy", textcolor = color.white)
+plotshape(sellSignal, title = "Sell Signal", style = shape.arrowdown, location = location.abovebar, color = color.red, text = "Sell", textcolor = color.white)
+
+alertcondition(buySignal, title = "Buy Entry", message = "Buy Entry")
+alertcondition(sellSignal, title = "Sell Entry", message = "Sell Entry")
