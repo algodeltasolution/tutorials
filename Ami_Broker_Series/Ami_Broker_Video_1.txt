@@ -1,0 +1,21 @@
+// AlgoDelta webhook URL
+webhookURL = ""; // Your Custom Bridge Webhook URL 
+
+// Function to send webhook order
+function placeBridgeOrder(webhookURL, trade_signal)
+{
+    _TRACE("====================================");
+    _TRACE("AlgoDelta Webhook: Signal = " + trade_signal);
+    _TRACE("Sending signal to AlgoDelta...");
+
+    curlCmd = "curl --location \"" + webhookURL + "\" " +
+              "--header \"Content-Type: text/plain\" " +
+              "--data \"" + trade_signal + "\"";
+
+    _TRACE("Webhook command: " + curlCmd);
+
+    ShellExecute("cmd.exe", "/c " + curlCmd, "", 0);
+
+    _TRACE("Webhook command launched for: " + trade_signal);
+    _TRACE("====================================");
+}
